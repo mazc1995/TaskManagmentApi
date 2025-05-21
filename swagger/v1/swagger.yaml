@@ -1,0 +1,222 @@
+---
+openapi: 3.0.1
+info:
+  title: API de Gestión de Tareas
+  version: v1
+  description: API para gestionar usuarios y tareas con autenticación básica
+components:
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+      description: Autenticación básica usando email y contraseña
+paths:
+  "/api/tasks":
+    get:
+      summary: Lista todas las tareas
+      tags:
+      - Tasks
+      security:
+      - basic_auth: []
+      responses:
+        '200':
+          description: lista de tareas
+        '401':
+          description: no autorizado
+    post:
+      summary: Crea una nueva tarea
+      tags:
+      - Tasks
+      security:
+      - basic_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: tarea creada
+        '401':
+          description: no autorizado
+        '422':
+          description: entidad no procesable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Mi tarea
+                description:
+                  type: string
+                  example: Descripción de la tarea
+                status:
+                  type: string
+                  enum:
+                  - pending
+                  - in_progress
+                  - completed
+                  example: pending
+                due_date:
+                  type: string
+                  format: date
+                  example: '2024-12-31'
+                user_id:
+                  type: integer
+                  example: 1
+              required:
+              - title
+              - description
+              - status
+              - due_date
+              - user_id
+  "/api/tasks/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Obtiene una tarea específica
+      tags:
+      - Tasks
+      security:
+      - basic_auth: []
+      responses:
+        '200':
+          description: tarea encontrada
+        '401':
+          description: no autorizado
+        '404':
+          description: tarea no encontrada
+    put:
+      summary: Actualiza una tarea
+      tags:
+      - Tasks
+      security:
+      - basic_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: tarea actualizada
+        '401':
+          description: no autorizado
+        '404':
+          description: tarea no encontrada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Mi tarea actualizada
+                description:
+                  type: string
+                  example: Nueva descripción
+                status:
+                  type: string
+                  enum:
+                  - pending
+                  - in_progress
+                  - completed
+                  example: in_progress
+                due_date:
+                  type: string
+                  format: date
+                  example: '2024-12-31'
+    delete:
+      summary: Elimina una tarea
+      tags:
+      - Tasks
+      security:
+      - basic_auth: []
+      responses:
+        '204':
+          description: tarea eliminada
+        '401':
+          description: no autorizado
+        '404':
+          description: tarea no encontrada
+  "/api/users":
+    get:
+      summary: Lista todos los usuarios
+      tags:
+      - Users
+      security:
+      - basic_auth: []
+      responses:
+        '200':
+          description: lista de usuarios
+        '401':
+          description: no autorizado
+    post:
+      summary: Crea un nuevo usuario
+      tags:
+      - Users
+      security:
+      - basic_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: usuario creado
+        '401':
+          description: no autorizado
+        '422':
+          description: entidad no procesable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                full_name:
+                  type: string
+                  example: John Doe
+                role:
+                  type: string
+                  enum:
+                  - user
+                  - admin
+                  example: user
+                password:
+                  type: string
+                  example: password123
+                password_confirmation:
+                  type: string
+                  example: password123
+              required:
+              - email
+              - full_name
+              - role
+              - password
+              - password_confirmation
+  "/api/users/{id}":
+    get:
+      summary: Obtiene un usuario específico
+      tags:
+      - Users
+      security:
+      - basic_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: usuario encontrado
+        '401':
+          description: no autorizado
+        '404':
+          description: usuario no encontrado
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
