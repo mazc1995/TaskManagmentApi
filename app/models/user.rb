@@ -5,4 +5,5 @@ class User < ApplicationRecord
   validates :full_name, presence: true
   validates :role, presence: true
   
+  enum :role, [:user, :admin]
 end
