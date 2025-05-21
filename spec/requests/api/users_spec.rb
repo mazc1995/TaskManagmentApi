@@ -12,14 +12,29 @@ RSpec.describe "Api::Users", type: :request do
     end
   end
 
+  describe "GET /show" do
+    describe "returns a user" do
+      it "returns a user" do
+        user = create(:user)
+        get "/api/users/#{user.id}"
+
+        expect(response).to have_http_status(:success)
+        expect(JSON.parse(response.body)["email"]).to eq(user.email)
+        expect(JSON.parse(response.body)["full_name"]).to eq(user.full_name)
+        expect(JSON.parse(response.body)["role"]).to eq(user.role)
+      end
+    end
+  end
+
   describe "POST /create" do
     describe "returns a new user" do
       it "creates a new user" do
-        post "/api/users", params: { user: attributes_for(:user) }
+        user_attributes = attributes_for(:user)
+        post "/api/users", params: { user: user_attributes }
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)["email"]).to eq(attributes_for(:user)[:email])
-        expect(JSON.parse(response.body)["full_name"]).to eq(attributes_for(:user)[:full_name])
-        expect(JSON.parse(response.body)["role"]).to eq(attributes_for(:user)[:role])
+        expect(JSON.parse(response.body)["email"]).to eq(user_attributes[:email])
+        expect(JSON.parse(response.body)["full_name"]).to eq(user_attributes[:full_name])
+        expect(JSON.parse(response.body)["role"]).to eq(user_attributes[:role].to_s)
       end
     end
   end
