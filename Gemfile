@@ -9,6 +9,9 @@ gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
+# Active Model Serializers
+gem 'active_model_serializers', '~> 0.10.0'
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -56,4 +59,8 @@ group :development, :test do
 
   # Shoulda Matchers
   gem 'shoulda-matchers'
+
+  # Rswag
+  gem 'rswag'
+  gem 'rswag-ui'
 end
