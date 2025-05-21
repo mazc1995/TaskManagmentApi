@@ -7,7 +7,5 @@ RSpec.describe Task, type: :model do
   it { should validate_presence_of(:due_date) }
 
   it { should belong_to(:user) }
-
-  it { should validate_presence_of(:user) }
   
 end

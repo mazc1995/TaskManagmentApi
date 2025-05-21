@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :task do
-    title { "MyString" }
-    description { "MyText" }
-    status { "MyString" }
-    due_date { "2025-05-20" }
-    user { nil }
+    title { Faker::Lorem.sentence }
+    description { Faker::Lorem.paragraph }
+    status { :pending }
+    due_date { Faker::Date.forward(days: 30) }
+    association :user, factory: :user
   end
 end
