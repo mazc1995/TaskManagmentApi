@@ -41,7 +41,7 @@ El proyecto sigue la arquitectura MVC de Rails con una capa adicional de servici
 1. Clonar el repositorio:
    ```
    git clone https://github.com/mazc1995/TaskManagmentApi
-   cd inetum
+   cd TaskManagmentApi
    ```
 
 2. Iniciar los contenedores con Docker Compose:
