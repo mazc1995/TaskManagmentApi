@@ -24,7 +24,7 @@ development:
   <<: *default
   database: inetum_development
   username: postgres
-  password: Origon1
+  password: postgres
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.

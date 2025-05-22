@@ -1,0 +1,48 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - db
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/inetum_development
+      - RAILS_MASTER_KEY=d2a6aec41dcd4324a5542d27e543670e
+    volumes:
+      - rails_storage:/rails/storage
+      - rails_tmp:/rails/tmp
+      - rails_log:/rails/log
+    networks:
+      - inetum_network
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=inetum_development
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - inetum_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  rails_storage:
+    driver: local
+  rails_tmp:
+    driver: local
+  rails_log:
+    driver: local
+
+networks:
+  inetum_network:
+    driver: bridge
