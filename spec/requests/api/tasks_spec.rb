@@ -6,11 +6,34 @@ RSpec.describe "Api::Tasks", type: :request do
 
   describe "GET /index" do
     context "when authenticated" do
-      it "returns a list of tasks" do
-        create_list(:task, 3, user: user)
+      it "returns a paginated list of tasks" do
+        create_list(:task, 15, user: user)
         get "/api/tasks", headers: auth_headers(user)
         expect(response).to have_http_status(:success)
-        expect(JSON.parse(response.body).size).to eq(3)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response).to include('tasks', 'pagination')
+        expect(json_response['tasks'].size).to eq(10) # Default page size
+        
+        # Verify pagination metadata
+        expect(json_response['pagination']).to include(
+          'page',
+          'items',
+          'count',
+          'pages'
+        )
+        expect(json_response['pagination']['count']).to eq(15)
+        expect(json_response['pagination']['pages']).to eq(2)
+      end
+
+      it "returns the second page of tasks" do
+        create_list(:task, 15, user: user)
+        get "/api/tasks", params: { page: 2 }, headers: auth_headers(user)
+        expect(response).to have_http_status(:success)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response['tasks'].size).to eq(5) # Remaining items on second page
+        expect(json_response['pagination']['page']).to eq(2)
       end
     end
 

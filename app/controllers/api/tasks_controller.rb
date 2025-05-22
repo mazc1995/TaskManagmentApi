@@ -2,8 +2,16 @@ class Api::TasksController < ApplicationController
   before_action :set_task, only: [:show, :update, :destroy]
 
   def index
-    @tasks = Task.all
-    render json: @tasks
+    @pagy, @tasks = pagy(Task.all)
+    render json: {
+      tasks: @tasks,
+      pagination: {
+        page: @pagy.page,
+        items: @pagy.items,
+        count: @pagy.count,
+        pages: @pagy.pages
+      }
+    }
   end
 
   def show

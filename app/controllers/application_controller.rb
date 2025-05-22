@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Basic::ControllerMethods
+  include Pagy::Backend
   before_action :authenticate
 
   attr_reader :current_user

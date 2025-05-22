@@ -10,13 +10,16 @@ RSpec.describe 'API::Tasks', type: :request do
       tags 'Tasks'
       security [basic_auth: []]
       produces 'application/json'
+      parameter name: :page, in: :query, type: :integer, required: false, description: 'Número de página'
 
       response '200', 'lista de tareas' do
         let(:Authorization) { credentials }
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data).to be_an(Array)
+          expect(data).to include('tasks', 'pagination')
+          expect(data['tasks']).to be_an(Array)
+          expect(data['pagination']).to include('page', 'items', 'count', 'pages')
         end
       end
 

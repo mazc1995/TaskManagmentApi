@@ -9,13 +9,16 @@ RSpec.describe 'API::Users', type: :request do
       tags 'Users'
       security [basic_auth: []]
       produces 'application/json'
+      parameter name: :page, in: :query, type: :integer, required: false, description: 'Número de página'
 
       response '200', 'lista de usuarios' do
         let(:Authorization) { credentials }
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data).to be_an(Array)
+          expect(data).to include('users', 'pagination')
+          expect(data['users']).to be_an(Array)
+          expect(data['pagination']).to include('page', 'items', 'count', 'pages')
         end
       end
 

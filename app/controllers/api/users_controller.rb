@@ -2,8 +2,16 @@ class Api::UsersController < ApplicationController
   before_action :set_user, only: [:show]
   
   def index
-    @users = User.all
-    render json: @users, status: :ok
+    @pagy, @users = pagy(User.all)
+    render json: {
+      users: @users,
+      pagination: {
+        page: @pagy.page,
+        items: @pagy.items,
+        count: @pagy.count,
+        pages: @pagy.pages
+      }
+    }, status: :ok
   end
 
   def show

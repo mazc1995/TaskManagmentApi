@@ -5,11 +5,34 @@ RSpec.describe "Api::Users", type: :request do
 
   describe "GET /index" do
     context "when authenticated" do
-      it "returns a list of users" do
-        create_list(:user, 3)
+      it "returns a paginated list of users" do
+        create_list(:user, 15)
         get "/api/users", headers: auth_headers(user)
         expect(response).to have_http_status(:success)
-        expect(JSON.parse(response.body).size).to eq(4) # 3 created + 1 authenticated user
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response).to include('users', 'pagination')
+        expect(json_response['users'].size).to eq(10) # Default page size
+        
+        # Verify pagination metadata
+        expect(json_response['pagination']).to include(
+          'page',
+          'items',
+          'count',
+          'pages'
+        )
+        expect(json_response['pagination']['count']).to eq(16) # 15 created + 1 authenticated user
+        expect(json_response['pagination']['pages']).to eq(2)
+      end
+
+      it "returns the second page of users" do
+        create_list(:user, 15)
+        get "/api/users", params: { page: 2 }, headers: auth_headers(user)
+        expect(response).to have_http_status(:success)
+        
+        json_response = JSON.parse(response.body)
+        expect(json_response['users'].size).to eq(6) # Remaining items on second page (5 + authenticated user)
+        expect(json_response['pagination']['page']).to eq(2)
       end
     end
 
