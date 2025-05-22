@@ -9,7 +9,12 @@ components:
     basic_auth:
       type: http
       scheme: basic
-      description: Autenticación básica usando email y contraseña
+      description: >-
+        Autenticación básica usando email y contraseña.
+        
+        Credenciales de prueba:
+        - Email: admin@example.com
+        - Contraseña: password
 paths:
   "/api/tasks":
     get:
@@ -185,30 +190,35 @@ paths:
             schema:
               type: object
               properties:
-                email:
-                  type: string
-                  example: user@example.com
-                full_name:
-                  type: string
-                  example: John Doe
-                role:
-                  type: string
-                  enum:
-                  - user
-                  - admin
-                  example: user
-                password:
-                  type: string
-                  example: password123
-                password_confirmation:
-                  type: string
-                  example: password123
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: user2@example.com
+                    full_name:
+                      type: string
+                      example: John Doe
+                    role:
+                      type: string
+                      enum:
+                      - user
+                      - admin
+                      example: user
+                    password:
+                      type: string
+                      example: password123
+                    password_confirmation:
+                      type: string
+                      example: password123
+                  required:
+                  - email
+                  - full_name
+                  - role
+                  - password
+                  - password_confirmation
               required:
-              - email
-              - full_name
-              - role
-              - password
-              - password_confirmation
+              - user
   "/api/users/{id}":
     get:
       summary: Obtiene un usuario específico

@@ -90,6 +90,15 @@ El proyecto sigue la arquitectura MVC de Rails con una capa adicional de servici
   - due_date (datetime)
   - user_id (foreign key)
 
+## Credenciales de prueba
+
+Para probar la API, puedes utilizar las siguientes credenciales:
+
+- **Email**: admin@example.com
+- **Contraseña**: password
+
+Estas credenciales te permitirán acceder a todas las funcionalidades de la API.
+
 ## Ejecutar pruebas
 
 ```

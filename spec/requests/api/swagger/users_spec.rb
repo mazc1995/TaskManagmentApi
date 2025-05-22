@@ -37,7 +37,7 @@ RSpec.describe 'API::Users', type: :request do
       parameter name: :user, in: :body, schema: {
         type: :object,
         properties: {
-          email: { type: :string, example: 'user@example.com' },
+          email: { type: :string, example: 'user2@example.com' },
           full_name: { type: :string, example: 'John Doe' },
           role: { type: :string, enum: ['user', 'admin'], example: 'user' },
           password: { type: :string, example: 'password123' },
