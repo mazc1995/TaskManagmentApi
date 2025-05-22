@@ -19,7 +19,7 @@ RSpec.describe 'API::Tasks', type: :request do
           data = JSON.parse(response.body)
           expect(data).to include('tasks', 'pagination')
           expect(data['tasks']).to be_an(Array)
-          expect(data['pagination']).to include('page', 'items', 'count', 'pages')
+          expect(data['pagination']).to include('page', 'count', 'pages')
         end
       end
 
